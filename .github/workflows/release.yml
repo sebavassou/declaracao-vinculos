@@ -3,6 +3,11 @@ name: Release
 on:
   push:
     tags: ["v*.*.*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag já existente a publicar (ex.: v1.0.0)"
+        required: true
 
 permissions:
   contents: write
@@ -13,18 +18,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build e push da imagem
+        env:
+          TAG: ${{ inputs.tag || github.ref_name }}
         run: |
           IMG=ghcr.io/${GITHUB_REPOSITORY,,}
-          docker build -t $IMG:${GITHUB_REF_NAME#v} -t $IMG:latest .
-          docker push $IMG:${GITHUB_REF_NAME#v}
+          docker build --label org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY} -t $IMG:${TAG#v} -t $IMG:latest .
+          docker push $IMG:${TAG#v}
           docker push $IMG:latest
       - name: Criar release
         env:
+          TAG: ${{ inputs.tag || github.ref_name }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || gh release create "$GITHUB_REF_NAME" --generate-notes --title "$GITHUB_REF_NAME"
+        run: gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --generate-notes --title "$TAG"

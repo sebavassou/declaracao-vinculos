@@ -1,5 +1,9 @@
 FROM python:3.12-slim
 
+LABEL org.opencontainers.image.source="https://github.com/sebavassou/declaracao-vinculos" \
+      org.opencontainers.image.description="Formulário eletrônico e API da Declaração de Vínculos (IN SGP/MGI nº 30/2025)" \
+      org.opencontainers.image.licenses="MIT"
+
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 TZ=America/Sao_Paulo \
     DV_DB_PATH=/dados/declaracoes.sqlite3
 WORKDIR /srv/app
