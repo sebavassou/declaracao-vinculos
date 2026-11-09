@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build e push da imagem
+        run: |
+          IMG=ghcr.io/${GITHUB_REPOSITORY,,}
+          docker build -t $IMG:${GITHUB_REF_NAME#v} -t $IMG:latest .
+          docker push $IMG:${GITHUB_REF_NAME#v}
+          docker push $IMG:latest
+      - name: Criar release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create "$GITHUB_REF_NAME" --generate-notes --title "$GITHUB_REF_NAME"

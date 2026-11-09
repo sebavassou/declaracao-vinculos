@@ -1,0 +1,51 @@
+﻿tabela;coluna;tipo;descricao;dado_pessoal_LGPD
+declaracoes;declaracao_id;texto (UUID);"Identificador estável do(a) declarante; retificações mantêm o id";Não
+declaracoes;protocolo;texto;Protocolo do envio (apenas API institucional);Não
+declaracoes;versao;inteiro;"Nº da versão (1 = original; >1 = retificação)";Não
+declaracoes;enviado_em;data-hora ISO 8601 (UTC);Momento do envio;Não
+declaracoes;nome;texto;Nome civil;Sim
+declaracoes;nome_social;texto;Nome social, se houver;Sim
+declaracoes;matricula_siape;texto (7-8 dígitos);"Matrícula SIAPE; chave de junção com SIAPE/SIGEPE";Sim
+declaracoes;cpf;texto (11 dígitos);"CPF validado pelos dígitos verificadores; mascarar em painéis";Sim
+declaracoes;setor_lotacao;texto;Setor/lotação no órgão;Não
+declaracoes;cargo_especialidade;texto;Cargo/especialidade;Não
+declaracoes;finalidade;categoria;posse_ingresso | atualizacao_cadastral | alteracao_vinculo | analise_acumulacao | outra;Não
+declaracoes;situacoes;lista separada por |;servidor_empregado_ativo | militar_ativo | servidor_empregado_aposentado | militar_reserva_reformado | beneficiario_pensao;Não
+declaracoes;qtd_vinculos_publicos;inteiro;Total de vínculos públicos declarados (vínculo principal incluído);Não
+declaracoes;qtd_outros_vinculos;inteiro;Vínculos públicos fora do órgão principal;Não
+declaracoes;carga_semanal_contratual_total;número (h);Soma das jornadas dos cargos (DE = 40h);Não
+declaracoes;carga_semanal_efetiva_total;número (h);Soma das jornadas efetivamente realizadas;Não
+declaracoes;acima_60h_semanais;booleano;"Triagem interna ARLEP (>60h): pede parecer da chefia e escalas; não é teto legal";Não
+declaracoes;possui_acumulacao_declarada;booleano;Mais de um vínculo, ou vínculo + aposentadoria/pensão;Não
+declaracoes;recebe_proventos_aposentadoria;booleano;Declarou proventos de aposentadoria;Não
+declaracoes;aposentadoria_valor;número (R$);Valor dos proventos;Sim (financeiro)
+declaracoes;recebe_pensao;booleano;Declarou pensão;Não
+declaracoes;pensao_regime;categoria;rpps_uniao | rpps_estadual_municipal | rgps | militar | outro;Não
+declaracoes;pensao_valor;número (R$);Valor da pensão;Sim (financeiro)
+declaracoes;empresa_participa;booleano;Participa de gerência/administração de empresa ou exerce comércio;Não
+declaracoes;empresa_condicao;categoria;acionista | cotista | comanditario | nenhuma_das_anteriores;Não
+declaracoes;empresa_cnpj;texto (14 dígitos);CNPJ validado;Não
+declaracoes;alerta_gerencia_empresa;booleano;Participa fora da condição de acionista/cotista/comanditário (Lei 8.112/1990, art. 117, X);Não
+declaracoes;dedicacao_exclusiva_com_outro_vinculo;booleano;Regime de DE declarado junto com outro vínculo;Não
+declaracoes;auxilio_alimentacao_multiplo;booleano;Auxílio-alimentação informado em mais de uma fonte;Não
+declaracoes;teletrabalho_orgao_principal;booleano;Teletrabalho/PGD ou híbrido no órgão principal;Não
+declaracoes;qtd_alertas;inteiro;Nº de pontos de atenção de triagem;Não
+declaracoes;processo_sei;texto;Processo SEI onde os comprovantes foram juntados;Não
+declaracoes;status_analise;categoria;recebida | em_analise | pendencia | regular | encaminhada (painel COAPE);Não
+vinculos;declaracao_id;texto (UUID);Chave estrangeira para declaracoes;Não
+vinculos;matricula_siape;texto;SIAPE do(a) declarante;Sim
+vinculos;ordem;inteiro;"1 = vínculo principal (órgão que coleta); 2+ = outros";Não
+vinculos;tipo;categoria;principal | outro;Não
+vinculos;orgao_entidade;texto;Órgão/entidade do vínculo;Não
+vinculos;esfera;categoria;federal | estadual | distrital | municipal;Não
+vinculos;cargo_funcao;texto;Cargo/função;Não
+vinculos;jornada_tipo;categoria;20h | 30h | 40h | DE | outro;Não
+vinculos;jornada_horas;número (h);Jornada semanal do cargo em horas;Não
+vinculos;jornada_efetiva_horas;número (h);Jornada efetivamente realizada;Não
+vinculos;horario_escala;texto;Dias e horários habituais (livre);Não
+vinculos;local_exercicio;texto;Local de exercício;Não
+vinculos;modalidade;categoria;presencial | teletrabalho_pgd | hibrida | outra;Não
+vinculos;recebe_auxilio_alimentacao;booleano;Recebe auxílio-alimentação neste vínculo;Não
+vinculos;jornada_reduzida;categoria;nao | mp_2174_28_2001 | decreto_1590_1995 | outro;Não
+vinculos;fc_possui / fc_denominacao / fc_tecnica_cientifica;booleano / texto / booleano;Função de confiança e se é técnica ou científica;Não
+vinculos;cc_possui / cc_denominacao / cc_tecnica_cientifica / cc_jornada_horas;booleano / texto / booleano / número;Cargo comissionado, natureza e jornada;Não

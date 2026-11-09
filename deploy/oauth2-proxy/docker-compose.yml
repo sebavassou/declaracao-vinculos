@@ -1,0 +1,36 @@
+# Login institucional via OIDC (Keycloak, ADFS, Microsoft Entra ID ou gov.br, se credenciado).
+# O oauth2-proxy autentica o usuário e repassa X-Forwarded-User/Email ao formulário.
+# Ajuste os valores <...> com a equipe de TI. Publique a porta 4180 atrás do HTTPS institucional.
+services:
+  oauth2-proxy:
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
+    command:
+      - --provider=oidc
+      - --oidc-issuer-url=<https://sso.orgao.gov.br/realms/servidores>
+      - --client-id=<declaracao-vinculos>
+      - --client-secret-file=/run/secrets/oidc_client_secret
+      - --cookie-secret-file=/run/secrets/cookie_secret
+      - --email-domain=*
+      - --upstream=http://declaracao-vinculos:8000
+      - --http-address=0.0.0.0:4180
+      - --pass-user-headers=true
+      - --set-xauthrequest=true
+      - --skip-auth-route=^/saude$
+      - --skip-auth-route=^/api/v1/(integracao|verificar|schema)   # integração usa token Bearer; verificação é pública
+    secrets: [oidc_client_secret, cookie_secret]
+    ports: ["127.0.0.1:4180:4180"]
+  declaracao-vinculos:
+    build: ../..
+    env_file: ../../.env
+    environment:
+      DV_AUTH_MODE: proxy
+      DV_AUTH_HEADER_USER: X-Forwarded-Preferred-Username
+      DV_AUTH_HEADER_EMAIL: X-Forwarded-Email
+      DV_AUTH_HEADER_NAME: X-Forwarded-User
+    volumes: [dados:/dados]
+    expose: ["8000"]          # sem porta publicada: só o proxy alcança a aplicação
+secrets:
+  oidc_client_secret: {file: ./oidc_client_secret.txt}
+  cookie_secret: {file: ./cookie_secret.txt}
+volumes:
+  dados:

@@ -1,0 +1,129 @@
+{
+  "schema": "declaracao_vinculos",
+  "schema_version": "1.0.0",
+  "identificacao": {
+    "nome": "SERVIDORA FICTÍCIA DE TESTE",
+    "nome_social": null,
+    "matricula_siape": "1234567",
+    "cpf": "52998224725",
+    "setor_lotacao": "Centro de Trauma",
+    "cargo_especialidade": "Médico – Ortopedia",
+    "telefone": "(21) 99999-0000",
+    "email_pessoal": null,
+    "email_institucional": "servidora.teste@into.saude.gov.br"
+  },
+  "finalidade": {
+    "tipo": "analise_acumulacao",
+    "outra_descricao": null
+  },
+  "situacoes": [
+    "servidor_empregado_ativo"
+  ],
+  "vinculos": [
+    {
+      "ordem": 1,
+      "tipo": "principal",
+      "orgao_entidade": "Instituto Nacional de Traumatologia e Ortopedia (INTO/MS)",
+      "esfera": "federal",
+      "matricula_vinculo": null,
+      "cargo_funcao": "Médico",
+      "jornada_semanal_cargo": {
+        "tipo": "40h",
+        "horas": 40
+      },
+      "jornada_efetiva_horas": 40,
+      "horario_escala": "seg a qui, 7h–17h",
+      "local_exercicio": "Centro de Trauma",
+      "modalidade_trabalho": {
+        "tipo": "presencial",
+        "outra": null
+      },
+      "recebe_auxilio_alimentacao": true,
+      "jornada_reduzida": {
+        "tipo": "nao",
+        "fundamento": null
+      },
+      "funcao_confianca": {
+        "possui": false,
+        "denominacao": null,
+        "tecnica_cientifica": null
+      },
+      "cargo_comissionado": {
+        "possui": false,
+        "denominacao": null,
+        "tecnica_cientifica": null,
+        "jornada_horas": null
+      }
+    },
+    {
+      "ordem": 2,
+      "tipo": "outro",
+      "orgao_entidade": "Secretaria Municipal de Saúde (fictício)",
+      "esfera": "municipal",
+      "matricula_vinculo": "000000",
+      "cargo_funcao": "Médico plantonista",
+      "jornada_semanal_cargo": {
+        "tipo": "20h",
+        "horas": 20
+      },
+      "jornada_efetiva_horas": 24,
+      "horario_escala": "sáb, 7h–7h (plantão 24h)",
+      "local_exercicio": "Hospital municipal (fictício)",
+      "modalidade_trabalho": {
+        "tipo": "presencial",
+        "outra": null
+      },
+      "recebe_auxilio_alimentacao": false,
+      "jornada_reduzida": {
+        "tipo": "nao",
+        "fundamento": null
+      },
+      "funcao_confianca": {
+        "possui": false,
+        "denominacao": null,
+        "tecnica_cientifica": null
+      },
+      "cargo_comissionado": {
+        "possui": false,
+        "denominacao": null,
+        "tecnica_cientifica": null,
+        "jornada_horas": null
+      }
+    }
+  ],
+  "aposentadoria": {
+    "possui": false,
+    "data_inicio": null,
+    "valor_proventos": null,
+    "recebe_auxilio_alimentacao": null
+  },
+  "pensao": {
+    "possui": false,
+    "origem": null,
+    "instituidor": null,
+    "matricula": null,
+    "regime_previdenciario": null,
+    "data_instituicao": null,
+    "valor": null,
+    "recebe_auxilio_alimentacao": null
+  },
+  "empresa_privada": {
+    "participa": false,
+    "condicao": null,
+    "cnpj": null
+  },
+  "informacoes_complementares": "Plantão de 24h aos sábados no vínculo municipal (exemplo fictício).",
+  "documentos": {
+    "processo_sei": "25057.000000/2026-00",
+    "juntados": [
+      "declaracao_rh_outro_orgao",
+      "declaracao_jornada_orgao"
+    ]
+  },
+  "manifestacao": {
+    "declara_veracidade": true,
+    "ciencia_lgpd": true,
+    "local": "Rio de Janeiro/RJ",
+    "data": "2026-10-29"
+  }
+}

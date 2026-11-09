@@ -1,0 +1,18 @@
+[project]
+name = "declaracao-vinculos"
+version = "1.0.0"
+description = "Formulário eletrônico e API da Declaração de Vínculos (IN SGP/MGI nº 30/2025)"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+
+[tool.ruff]
+line-length = 210
+target-version = "py311"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B"]
+ignore = ["B008", "E731"]  # Depends() em argumentos é o padrão do FastAPI; lambdas curtas são aceitas

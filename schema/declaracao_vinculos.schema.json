@@ -1,0 +1,515 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/sebavassou/declaracao-vinculos/schema/declaracao_vinculos/1.0.0",
+  "title": "Declaração de Vínculos (IN SGP/MGI nº 30/2025)",
+  "description": "Documento gerado a cada envio do Formulário de Declaração de Vínculos (IN SGP/MGI nº 30/2025). Contém dados pessoais: tratar conforme a Lei nº 13.709/2018.",
+  "type": "object",
+  "required": [
+    "schema",
+    "schema_version",
+    "identificacao",
+    "finalidade",
+    "situacoes",
+    "vinculos",
+    "aposentadoria",
+    "pensao",
+    "empresa_privada",
+    "manifestacao"
+  ],
+  "$defs": {
+    "simnao": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "texto": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 2000
+    },
+    "vinculo": {
+      "type": "object",
+      "required": [
+        "ordem",
+        "tipo",
+        "orgao_entidade",
+        "cargo_funcao",
+        "jornada_semanal_cargo",
+        "jornada_efetiva_horas",
+        "local_exercicio",
+        "modalidade_trabalho",
+        "recebe_auxilio_alimentacao",
+        "jornada_reduzida",
+        "funcao_confianca",
+        "cargo_comissionado"
+      ],
+      "properties": {
+        "ordem": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "tipo": {
+          "enum": [
+            "principal",
+            "outro"
+          ],
+          "description": "principal = vínculo com o órgão que coleta a declaração; outro = demais vínculos públicos"
+        },
+        "orgao_entidade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "esfera": {
+          "enum": [
+            "federal",
+            "estadual",
+            "distrital",
+            "municipal",
+            null
+          ]
+        },
+        "matricula_vinculo": {
+          "$ref": "#/$defs/texto"
+        },
+        "cargo_funcao": {
+          "type": "string",
+          "minLength": 1
+        },
+        "jornada_semanal_cargo": {
+          "type": "object",
+          "required": [
+            "tipo",
+            "horas"
+          ],
+          "properties": {
+            "tipo": {
+              "enum": [
+                "20h",
+                "30h",
+                "40h",
+                "DE",
+                "outro"
+              ]
+            },
+            "horas": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 80
+            }
+          }
+        },
+        "jornada_efetiva_horas": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 168
+        },
+        "horario_escala": {
+          "$ref": "#/$defs/texto"
+        },
+        "local_exercicio": {
+          "type": "string",
+          "minLength": 1
+        },
+        "modalidade_trabalho": {
+          "type": "object",
+          "required": [
+            "tipo"
+          ],
+          "properties": {
+            "tipo": {
+              "enum": [
+                "presencial",
+                "teletrabalho_pgd",
+                "hibrida",
+                "outra"
+              ]
+            },
+            "outra": {
+              "$ref": "#/$defs/texto"
+            }
+          }
+        },
+        "recebe_auxilio_alimentacao": {
+          "type": "boolean"
+        },
+        "jornada_reduzida": {
+          "type": "object",
+          "required": [
+            "tipo"
+          ],
+          "properties": {
+            "tipo": {
+              "enum": [
+                "nao",
+                "mp_2174_28_2001",
+                "decreto_1590_1995",
+                "outro"
+              ]
+            },
+            "fundamento": {
+              "$ref": "#/$defs/texto"
+            }
+          }
+        },
+        "funcao_confianca": {
+          "type": "object",
+          "required": [
+            "possui"
+          ],
+          "properties": {
+            "possui": {
+              "type": "boolean"
+            },
+            "denominacao": {
+              "$ref": "#/$defs/texto"
+            },
+            "tecnica_cientifica": {
+              "$ref": "#/$defs/simnao"
+            }
+          }
+        },
+        "cargo_comissionado": {
+          "type": "object",
+          "required": [
+            "possui"
+          ],
+          "properties": {
+            "possui": {
+              "type": "boolean"
+            },
+            "denominacao": {
+              "$ref": "#/$defs/texto"
+            },
+            "tecnica_cientifica": {
+              "$ref": "#/$defs/simnao"
+            },
+            "jornada_horas": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 80
+            }
+          }
+        }
+      }
+    }
+  },
+  "properties": {
+    "schema": {
+      "const": "declaracao_vinculos"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^1\\.\\d+\\.\\d+$"
+    },
+    "declaracao_id": {
+      "type": "string",
+      "description": "UUID estável do(a) declarante; retificações mantêm o mesmo id e incrementam 'versao'."
+    },
+    "versao": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "enviado_em": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "declarante_login": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Login institucional de quem enviou (quando a instalação exige login)."
+    },
+    "identificacao": {
+      "type": "object",
+      "required": [
+        "nome",
+        "matricula_siape",
+        "cpf",
+        "setor_lotacao",
+        "cargo_especialidade",
+        "telefone",
+        "email_institucional"
+      ],
+      "properties": {
+        "nome": {
+          "type": "string",
+          "minLength": 3
+        },
+        "nome_social": {
+          "$ref": "#/$defs/texto"
+        },
+        "matricula_siape": {
+          "type": "string",
+          "pattern": "^\\d{7,8}$"
+        },
+        "cpf": {
+          "type": "string",
+          "pattern": "^\\d{11}$",
+          "description": "Somente dígitos. Dado pessoal: mascarar em painéis."
+        },
+        "setor_lotacao": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cargo_especialidade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "telefone": {
+          "type": "string"
+        },
+        "email_pessoal": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "email_institucional": {
+          "type": "string"
+        }
+      }
+    },
+    "finalidade": {
+      "type": "object",
+      "required": [
+        "tipo"
+      ],
+      "properties": {
+        "tipo": {
+          "enum": [
+            "posse_ingresso",
+            "atualizacao_cadastral",
+            "alteracao_vinculo",
+            "analise_acumulacao",
+            "outra"
+          ]
+        },
+        "outra_descricao": {
+          "$ref": "#/$defs/texto"
+        }
+      }
+    },
+    "situacoes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "servidor_empregado_ativo",
+          "militar_ativo",
+          "servidor_empregado_aposentado",
+          "militar_reserva_reformado",
+          "beneficiario_pensao"
+        ]
+      }
+    },
+    "vinculos": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/vinculo"
+      }
+    },
+    "aposentadoria": {
+      "type": "object",
+      "required": [
+        "possui"
+      ],
+      "properties": {
+        "possui": {
+          "type": "boolean"
+        },
+        "data_inicio": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "valor_proventos": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "recebe_auxilio_alimentacao": {
+          "$ref": "#/$defs/simnao"
+        }
+      }
+    },
+    "pensao": {
+      "type": "object",
+      "required": [
+        "possui"
+      ],
+      "properties": {
+        "possui": {
+          "type": "boolean"
+        },
+        "origem": {
+          "$ref": "#/$defs/texto"
+        },
+        "instituidor": {
+          "$ref": "#/$defs/texto"
+        },
+        "matricula": {
+          "$ref": "#/$defs/texto"
+        },
+        "regime_previdenciario": {
+          "enum": [
+            "rpps_uniao",
+            "rpps_estadual_municipal",
+            "rgps",
+            "militar",
+            "outro",
+            null
+          ]
+        },
+        "data_instituicao": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "valor": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "recebe_auxilio_alimentacao": {
+          "$ref": "#/$defs/simnao"
+        }
+      }
+    },
+    "empresa_privada": {
+      "type": "object",
+      "required": [
+        "participa"
+      ],
+      "properties": {
+        "participa": {
+          "type": "boolean"
+        },
+        "condicao": {
+          "enum": [
+            "acionista",
+            "cotista",
+            "comanditario",
+            "nenhuma_das_anteriores",
+            null
+          ]
+        },
+        "cnpj": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{14}$"
+        }
+      }
+    },
+    "informacoes_complementares": {
+      "$ref": "#/$defs/texto"
+    },
+    "documentos": {
+      "type": "object",
+      "properties": {
+        "processo_sei": {
+          "$ref": "#/$defs/texto"
+        },
+        "juntados": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "declaracao_rh_outro_orgao",
+              "ato_aposentadoria_pensao_reserva",
+              "declaracao_jornada_orgao",
+              "qsa_ou_contrato_social"
+            ]
+          }
+        }
+      }
+    },
+    "manifestacao": {
+      "type": "object",
+      "required": [
+        "declara_veracidade",
+        "ciencia_lgpd"
+      ],
+      "properties": {
+        "declara_veracidade": {
+          "const": true
+        },
+        "ciencia_lgpd": {
+          "const": true
+        },
+        "local": {
+          "type": "string"
+        },
+        "data": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "indicadores": {
+      "type": "object",
+      "description": "Campos derivados (recalculados no servidor). Triagem, não decisão.",
+      "properties": {
+        "qtd_vinculos_publicos": {
+          "type": "integer"
+        },
+        "qtd_outros_vinculos": {
+          "type": "integer"
+        },
+        "carga_semanal_contratual_total": {
+          "type": "number"
+        },
+        "carga_semanal_efetiva_total": {
+          "type": "number"
+        },
+        "acima_60h_semanais": {
+          "type": "boolean"
+        },
+        "possui_acumulacao_declarada": {
+          "type": "boolean"
+        },
+        "recebe_proventos_aposentadoria": {
+          "type": "boolean"
+        },
+        "recebe_pensao": {
+          "type": "boolean"
+        },
+        "dedicacao_exclusiva_com_outro_vinculo": {
+          "type": "boolean"
+        },
+        "alerta_gerencia_empresa": {
+          "type": "boolean"
+        },
+        "auxilio_alimentacao_multiplo": {
+          "type": "boolean"
+        },
+        "jornada_efetiva_divergente": {
+          "type": "boolean"
+        },
+        "qtd_alertas": {
+          "type": "integer"
+        },
+        "teletrabalho_orgao_principal": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

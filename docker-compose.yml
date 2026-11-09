@@ -1,0 +1,13 @@
+# Instalação mínima (rede interna, sem login). Para login institucional, veja deploy/ e docs/implantacao.md.
+services:
+  declaracao-vinculos:
+    build: .
+    image: declaracao-vinculos:1.0.0
+    env_file: .env
+    volumes:
+      - dados:/dados
+    ports:
+      - "127.0.0.1:8000:8000"   # exposto só localmente; publique via proxy reverso com HTTPS
+    restart: unless-stopped
+volumes:
+  dados:

@@ -1,0 +1,5 @@
+fastapi>=0.110,<1
+uvicorn[standard]>=0.29
+jsonschema>=4.21
+python-dotenv>=1.0
+reportlab>=4.0

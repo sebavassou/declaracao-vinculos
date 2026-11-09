@@ -1,0 +1,792 @@
+<title>Declaração de Vínculos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+<style>
+/* Layout: formulário-documento em coluna única (timbre no topo, seções da declaração em sequência), painel COAPE em aba própria */
+:root {
+  --paper: #f6f8f9;
+  --sheet: #ffffff;
+  --ink: #17242c;
+  --muted: #5a6a73;
+  --rule: #d5dde1;
+  --field: #fbfcfd;
+  --accent: #0b5d7a;
+  --accent-soft: #e2eff4;
+  --ok: #1f7a4a;
+  --warn: #9a5b00;
+  --warn-soft: #fff3df;
+  --bad: #b3261e;
+  --bad-soft: #fde8e6;
+  --f-display: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", Roboto, Arial, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #0f171b; --sheet: #162127; --ink: #e3ebef; --muted: #9db0ba; --rule: #2c3b43; --field: #1b282f;
+  --accent: #6cc0dd; --accent-soft: #17323d; --ok: #6fcf97; --warn: #f0b45a; --warn-soft: #33270f; --bad: #ff8a80; --bad-soft: #3a1c1a;
+  color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #0f171b; --sheet: #162127; --ink: #e3ebef; --muted: #9db0ba; --rule: #2c3b43; --field: #1b282f;
+  --accent: #6cc0dd; --accent-soft: #17323d; --ok: #6fcf97; --warn: #f0b45a; --warn-soft: #33270f; --bad: #ff8a80; --bad-soft: #3a1c1a;
+  color-scheme: dark }
+
+* { box-sizing: border-box }
+[hidden] { display: none !important }
+body { background: var(--paper); color: var(--ink); font: 15px/1.55 var(--f-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px 64px }
+.wrap { max-width: 880px; margin: 0 auto; display: grid; gap: 20px }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; font-weight: 600 }
+h1 { font-size: 1.6rem; line-height: 1.2 }
+h2 { font-size: 1.15rem }
+h3 { font-size: 1rem; font-family: var(--f-body) }
+p { margin: 0 }
+.letterhead { display: grid; gap: 4px; border-bottom: 2px solid var(--ink); padding-bottom: 14px }
+.letterhead .org { font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); line-height: 1.5 }
+.letterhead .norma { font-size: .85rem; color: var(--muted) }
+.tabs { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid var(--rule) }
+.tabs button { font: 500 .9rem var(--f-body); background: none; border: 0; border-bottom: 3px solid transparent; color: var(--muted); padding: 8px 12px; cursor: pointer }
+.tabs button[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent) }
+.tabs button:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+
+.notice { background: var(--accent-soft); border-radius: 6px; padding: 12px 14px; font-size: .9rem; display: grid; gap: 6px }
+.notice.warn { background: var(--warn-soft) }
+.notice.bad { background: var(--bad-soft) }
+.sec { background: var(--sheet); border: 1px solid var(--rule); border-radius: 8px; padding: 20px; display: grid; gap: 16px; min-width: 0 }
+.sec > header { display: flex; gap: 10px; align-items: baseline; border-bottom: 1px solid var(--rule); padding-bottom: 10px }
+.sec > header .n { font: 500 .8rem var(--f-mono); color: var(--accent) }
+.sub { border-top: 1px dashed var(--rule); padding-top: 14px; display: grid; gap: 14px }
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) }
+.grid > * { min-width: 0 }
+.f { display: grid; gap: 5px; min-width: 0 }
+.f > span, .lbl { font-size: .82rem; font-weight: 600; color: var(--ink) }
+.f > span em, .lbl em { color: var(--bad); font-style: normal }
+.hint { font-size: .8rem; color: var(--muted) }
+input[type=text], input[type=email], input[type=tel], input[type=number], input[type=date], select, textarea {
+  font: 15px var(--f-body); color: var(--ink); background: var(--field); border: 1px solid var(--rule); border-radius: 5px; padding: 8px 10px; width: 100%; min-width: 0 }
+textarea { min-height: 84px; resize: vertical }
+input.invalid, select.invalid, textarea.invalid, .choices.invalid { border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad) }
+.err { font-size: .8rem; color: var(--bad) }
+.choices { display: flex; flex-wrap: wrap; gap: 6px 16px; border: 1px solid transparent; border-radius: 5px; padding: 2px 0 }
+.choices label { display: inline-flex; gap: 6px; align-items: center; font-size: .92rem; cursor: pointer }
+.choices input { accent-color: var(--accent); width: 16px; height: 16px }
+.inline-other { display: inline-flex; gap: 8px; align-items: center; flex: 1 1 200px }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums }
+.vinc { border: 1px solid var(--rule); border-radius: 6px; padding: 16px; display: grid; gap: 14px; background: var(--paper) }
+.vinc header { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap }
+.btn { font: 500 .9rem var(--f-body); border-radius: 5px; padding: 9px 16px; cursor: pointer; border: 1px solid var(--accent); background: var(--accent); color: var(--sheet) }
+.btn.ghost { background: transparent; color: var(--accent) }
+.btn.small { padding: 5px 10px; font-size: .82rem }
+.btn.danger { border-color: var(--bad); color: var(--bad); background: transparent }
+.btn[disabled] { opacity: .55; cursor: not-allowed }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center }
+.summary { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) }
+.kpi { border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px; background: var(--sheet) }
+.kpi b { display: block; font: 500 1.35rem var(--f-mono); font-variant-numeric: tabular-nums }
+.kpi span { font-size: .78rem; color: var(--muted) }
+.flags { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none }
+.flags li { font-size: .88rem; padding: 6px 10px; border-left: 3px solid var(--warn); background: var(--warn-soft); border-radius: 0 4px 4px 0 }
+.flags li.okf { border-left-color: var(--ok); background: var(--accent-soft) }
+.legal { font-size: .85rem; color: var(--muted); display: grid; gap: 8px }
+.legal ol { margin: 0; padding-left: 20px; display: grid; gap: 4px }
+.check { display: flex; gap: 10px; align-items: flex-start; font-size: .92rem }
+.check input { margin-top: 4px; accent-color: var(--accent); width: 16px; height: 16px; flex: none }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--ink); color: var(--sheet); padding: 10px 16px; border-radius: 6px; font-size: .9rem; max-width: calc(100% - 32px) }
+.table-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--sheet) }
+table { border-collapse: collapse; width: 100%; font-size: .85rem }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); white-space: nowrap; vertical-align: top }
+th { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); background: var(--paper) }
+td.num { text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums }
+.pill { display: inline-block; font-size: .72rem; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--rule); margin-right: 4px }
+.pill.w { border-color: var(--warn); color: var(--warn) }
+.pill.b { border-color: var(--bad); color: var(--bad) }
+code, pre { font-family: var(--f-mono); font-size: .82rem }
+pre { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 12px; overflow-x: auto; margin: 0 }
+@media (max-width: 520px) { .sec { padding: 14px } h1 { font-size: 1.3rem } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important } }
+</style>
+
+<div class="wrap">
+  <header class="letterhead">
+    <p class="org"><span data-cfg="cabecalho_1">Ministério da Saúde · Secretaria de Atenção Especializada à Saúde</span><br><span data-cfg="cabecalho_2">Instituto Nacional de Traumatologia e Ortopedia · Coordenação de Administração de Pessoas</span></p>
+    <h1>Formulário de Declaração de Vínculos</h1>
+    <p class="norma">Base normativa: Instrução Normativa SGP/MGI nº 30, de 27 de janeiro de 2025, e alterações posteriores publicadas pelo MGI.</p>
+  </header>
+
+  <nav class="tabs" role="tablist" id="tabs">
+    <button role="tab" id="tab-form" aria-selected="true" data-view="form">Minha declaração</button>
+    <button role="tab" id="tab-painel" aria-selected="false" data-view="painel" hidden>Painel COAPE</button>
+    <button role="tab" id="tab-dados" aria-selected="false" data-view="dados" hidden>Dados e integração</button>
+  </nav>
+
+  <!-- ===================== FORMULÁRIO ===================== -->
+  <main id="view-form" class="wrap">
+    <div class="notice" id="status-box">
+      <strong>Como funciona</strong>
+      <p>Preencha todas as seções e envie. A declaração fica registrada eletronicamente, com data e hora, e pode ser retificada a qualquer momento por novo envio. Campos com <em style="color:var(--bad);font-style:normal">*</em> são obrigatórios.</p>
+    </div>
+
+    <form id="form" novalidate>
+      <div class="wrap">
+      <section class="sec" aria-labelledby="h-ident">
+        <header><span class="n">1</span><h2 id="h-ident">Identificação do(a) servidor(a)</h2></header>
+        <div class="grid">
+          <label class="f"><span>Nome <em>*</em></span><input type="text" id="nome" autocomplete="name" required></label>
+          <label class="f"><span>Nome social</span><input type="text" id="nome_social"><small class="hint">Preencha se utiliza nome social (Decreto nº 8.727/2016).</small></label>
+        </div>
+        <div class="grid">
+          <label class="f"><span>Matrícula SIAPE <em>*</em></span><input type="text" id="matricula_siape" inputmode="numeric" maxlength="8" class="mono" required></label>
+          <label class="f"><span>CPF <em>*</em></span><input type="text" id="cpf" inputmode="numeric" maxlength="14" class="mono" placeholder="000.000.000-00" required></label>
+          <label class="f"><span>Setor/lotação <em>*</em></span><input type="text" id="setor_lotacao" required></label>
+        </div>
+        <div class="grid">
+          <label class="f"><span>Cargo/especialidade <em>*</em></span><input type="text" id="cargo_especialidade" required></label>
+          <label class="f"><span>Telefone <em>*</em></span><input type="tel" id="telefone" autocomplete="tel" required></label>
+        </div>
+        <div class="grid">
+          <label class="f"><span>E-mail pessoal</span><input type="email" id="email_pessoal" autocomplete="email"></label>
+          <label class="f"><span>E-mail institucional <em>*</em></span><input type="email" id="email_institucional" required></label>
+        </div>
+      </section>
+
+      <section class="sec" aria-labelledby="h-fin">
+        <header><span class="n">2</span><h2 id="h-fin">Finalidade da declaração</h2></header>
+        <div class="choices" id="finalidade" data-required="radio" role="radiogroup" aria-label="Finalidade">
+          <label><input type="radio" name="finalidade" value="posse_ingresso"> Posse/ingresso</label>
+          <label><input type="radio" name="finalidade" value="atualizacao_cadastral"> Atualização cadastral</label>
+          <label><input type="radio" name="finalidade" value="alteracao_vinculo"> Alteração de vínculo</label>
+          <label><input type="radio" name="finalidade" value="analise_acumulacao"> Análise de acumulação</label>
+          <span class="inline-other"><label><input type="radio" name="finalidade" value="outra"> Outra:</label><input type="text" id="finalidade_outra" aria-label="Outra finalidade"></span>
+        </div>
+      </section>
+
+      <section class="sec" aria-labelledby="h-sit">
+        <header><span class="n">3</span><h2 id="h-sit">Situação(ões) a declarar</h2></header>
+        <p class="hint">Marque todas as que se aplicam.</p>
+        <div class="choices" id="situacoes" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+          <label><input type="checkbox" name="situacoes" value="servidor_empregado_ativo"> Sou servidor(a) ou empregado(a) público(a) em atividade.</label>
+          <label><input type="checkbox" name="situacoes" value="militar_ativo"> Sou militar ativo.</label>
+          <label><input type="checkbox" name="situacoes" value="servidor_empregado_aposentado"> Sou servidor(a) ou empregado(a) público(a) aposentado(a).</label>
+          <label><input type="checkbox" name="situacoes" value="militar_reserva_reformado"> Sou militar da reserva ou reformado(a).</label>
+          <label><input type="checkbox" name="situacoes" value="beneficiario_pensao"> Sou beneficiário(a) de pensão.</label>
+        </div>
+      </section>
+
+      <section class="sec" aria-labelledby="h-vinc">
+        <header><span class="n">4</span><h2 id="h-vinc">Vínculos públicos</h2></header>
+        <div id="vinculos" class="wrap" style="gap:14px"></div>
+        <div class="actions"><button type="button" class="btn ghost" id="add-vinculo">+ Adicionar outro vínculo</button><span class="hint">Inclua cada cargo, emprego ou função pública fora do <span data-cfg="orgao_sigla">INTO</span>.</span></div>
+      </section>
+
+      <section class="sec" aria-labelledby="h-esp">
+        <header><span class="n">5</span><h2 id="h-esp">Situações especiais – complementação</h2></header>
+
+        <div class="grid" style="align-items:end">
+          <div class="f"><span class="lbl">Aposentado(a) / proventos <em>*</em></span>
+            <div class="choices" id="apos" data-required="radio"><label><input type="radio" name="apos" value="sim"> Sim</label><label><input type="radio" name="apos" value="nao"> Não</label></div></div>
+        </div>
+        <div class="grid" id="apos-det" hidden>
+          <label class="f"><span>A partir de <em>*</em></span><input type="date" id="apos_data"></label>
+          <label class="f"><span>Valor dos proventos (R$) <em>*</em></span><input type="number" id="apos_valor" min="0" step="0.01" class="mono"></label>
+          <div class="f"><span class="lbl">Recebe auxílio-alimentação <em>*</em></span><div class="choices" id="apos_aux"><label><input type="radio" name="apos_aux" value="sim"> Sim</label><label><input type="radio" name="apos_aux" value="nao"> Não</label></div></div>
+        </div>
+
+        <div class="sub">
+          <div class="f"><span class="lbl">Beneficiário(a) de pensão <em>*</em></span>
+            <div class="choices" id="pens" data-required="radio"><label><input type="radio" name="pens" value="sim"> Sim</label><label><input type="radio" name="pens" value="nao"> Não</label></div></div>
+          <div id="pens-det" class="wrap" style="gap:14px" hidden>
+            <div class="grid">
+              <label class="f"><span>Origem da pensão (cargo/emprego/outros) <em>*</em></span><input type="text" id="pens_origem"></label>
+              <label class="f"><span>Identificação do instituidor <em>*</em></span><input type="text" id="pens_instituidor"><small class="hint">Nome do instituidor. Não informe outros dados pessoais dele.</small></label>
+            </div>
+            <div class="grid">
+              <label class="f"><span>Matrícula</span><input type="text" id="pens_matricula" class="mono"></label>
+              <label class="f"><span>Regime previdenciário <em>*</em></span><select id="pens_regime"><option value="">Selecione</option><option value="rpps_uniao">RPPS da União</option><option value="rpps_estadual_municipal">RPPS estadual/municipal</option><option value="rgps">RGPS (INSS)</option><option value="militar">Sistema de proteção dos militares</option><option value="outro">Outro</option></select></label>
+              <label class="f"><span>Data da instituição <em>*</em></span><input type="date" id="pens_data"></label>
+            </div>
+            <div class="grid">
+              <label class="f"><span>Valor recebido (R$) <em>*</em></span><input type="number" id="pens_valor" min="0" step="0.01" class="mono"></label>
+              <div class="f"><span class="lbl">Recebe auxílio-alimentação <em>*</em></span><div class="choices" id="pens_aux"><label><input type="radio" name="pens_aux" value="sim"> Sim</label><label><input type="radio" name="pens_aux" value="nao"> Não</label></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div class="f"><span class="lbl">O(a) servidor(a) participa de gerência ou administração de empresa privada, sociedade civil ou exerce o comércio? <em>*</em></span>
+            <div class="choices" id="emp" data-required="radio"><label><input type="radio" name="emp" value="sim"> Sim</label><label><input type="radio" name="emp" value="nao"> Não</label></div></div>
+          <div id="emp-det" class="wrap" style="gap:14px" hidden>
+            <div class="f"><span class="lbl">Na condição de <em>*</em></span>
+              <div class="choices" id="emp_cond"><label><input type="radio" name="emp_cond" value="acionista"> Acionista</label><label><input type="radio" name="emp_cond" value="cotista"> Cotista</label><label><input type="radio" name="emp_cond" value="comanditario"> Comanditário(a)</label><label><input type="radio" name="emp_cond" value="nenhuma_das_anteriores"> Nenhuma das anteriores</label></div></div>
+            <div class="grid">
+              <label class="f"><span>CNPJ <em>*</em></span><input type="text" id="emp_cnpj" class="mono" inputmode="numeric" maxlength="18" placeholder="00.000.000/0000-00"></label>
+            </div>
+            <p class="hint">Junte ao processo SEI o extrato do Quadro de Sócios e Administradores (QSA) da Receita Federal com o CNPJ, ou cópia do estatuto ou contrato social.</p>
+          </div>
+        </div>
+
+        <label class="f"><span>Informações complementares</span><textarea id="info_comp"></textarea></label>
+      </section>
+
+      <section class="sec" aria-labelledby="h-doc">
+        <header><span class="n">6</span><h2 id="h-doc">Documentos comprobatórios</h2></header>
+        <p class="hint">Os documentos são juntados no processo SEI. Indique o processo e marque o que já foi juntado. O prazo de apresentação é de 10 (dez) dias, prorrogável mediante solicitação formal; encerrado o prazo sem manifestação, o caso poderá ser encaminhado para fins disciplinares.</p>
+        <label class="f" style="max-width:360px"><span>Nº do processo SEI</span><input type="text" id="processo_sei" class="mono" placeholder="25057.000000/2026-00"></label>
+        <div class="choices" id="docs" style="display:grid;gap:8px">
+          <label><input type="checkbox" name="docs" value="declaracao_rh_outro_orgao"> Declaração do RH do outro órgão (cargo, matrícula, ingresso, regime, carga horária, horário de entrada e saída, dias trabalhados, escala do mês).</label>
+          <label><input type="checkbox" name="docs" value="ato_aposentadoria_pensao_reserva"> Declaração do RH ou cópia do ato de aposentadoria, pensão, reserva remunerada ou reforma.</label>
+          <label><input type="checkbox" name="docs" value="declaracao_jornada_orgao"> Declaração da jornada no <span data-cfg="orgao_sigla">INTO</span> (regime, carga horária, horário, dias trabalhados, escala do mês).</label>
+          <label><input type="checkbox" name="docs" value="qsa_ou_contrato_social"> Extrato QSA/Receita Federal ou estatuto/contrato social.</label>
+        </div>
+      </section>
+
+      <section class="sec" aria-labelledby="h-res">
+        <header><span class="n">7</span><h2 id="h-res">Resumo calculado</h2></header>
+        <p class="hint">Calculado a partir do que foi informado. Serve de triagem para a COAPE e não é decisão sobre a acumulação.</p>
+        <div class="summary" id="kpis"></div>
+        <ul class="flags" id="flags"></ul>
+      </section>
+
+      <section class="sec" aria-labelledby="h-man">
+        <header><span class="n">8</span><h2 id="h-man">Orientações e manifestação do(a) servidor(a)</h2></header>
+        <div class="legal">
+          <p>A partir do preenchimento e envio deste formulário, o(a) declarante é responsável pela veracidade das informações prestadas.</p>
+          <p>Esta declaração deverá ser retificada imediatamente em caso de erro e atualizada sempre que houver alteração na situação funcional, independentemente de decorrer da vontade do agente ou de ato da Administração, incluindo a adesão ao Programa de Gestão e Desempenho (PGD) de que trata o Decreto nº 11.072/2022, ou a outro programa que autorize o teletrabalho, e a modalidade adotada.</p>
+          <p>Efetivada a acumulação remunerada, qualquer alteração em um dos vínculos deve ser comunicada imediatamente às unidades de gestão de pessoas dos órgãos envolvidos.</p>
+          <p>Código Penal, art. 299: omitir, em documento público ou particular, declaração que dele devia constar, ou nele inserir ou fazer inserir declaração falsa ou diversa da que devia ser escrita, com o fim de prejudicar direito, criar obrigação ou alterar a verdade sobre fato juridicamente relevante. Pena: reclusão de 1 a 5 anos e multa, se o documento é público, e reclusão de 1 a 3 anos, se particular.</p>
+          <p><strong>Tratamento de dados pessoais (Lei nº 13.709/2018).</strong> Os dados são tratados pela <span data-cfg="unidade_gp">COAPE/INTO</span> exclusivamente para cumprimento de obrigação legal e execução de políticas públicas de gestão de pessoas (arts. 7º, II e III, e 23 da LGPD), em especial a verificação de acumulação de cargos (CF, art. 37, XVI e XVII; Lei nº 8.112/1990, arts. 117, X, e 118). O acesso é restrito à equipe responsável e os dados não são compartilhados fora das hipóteses legais.</p>
+        </div>
+        <label class="check"><input type="checkbox" id="decl_veracidade"><span>Declaro que as informações prestadas neste formulário são verdadeiras, completas e atualizadas. Comprometo-me a comunicar imediatamente à unidade de gestão de pessoas qualquer alteração em meus vínculos ou na situação funcional que possa repercutir na análise de acumulação, inclusive alteração de jornada, local de exercício, afastamento/licença e modalidade de trabalho. <em style="color:var(--bad);font-style:normal">*</em></span></label>
+        <label class="check"><input type="checkbox" id="decl_lgpd"><span>Declaro ciência do tratamento dos meus dados pessoais para as finalidades acima. <em style="color:var(--bad);font-style:normal">*</em></span></label>
+        <p class="hint"><span data-cfg="cidade_uf">Rio de Janeiro/RJ</span>, <span id="data-hoje" class="mono"></span>. O envio registra data, hora e identificação da conta do(a) declarante.</p>
+        <div id="form-errors" class="notice bad" hidden></div>
+        <div class="actions">
+          <button type="submit" class="btn" id="btn-enviar">Enviar declaração</button>
+          <button type="button" class="btn ghost" id="btn-comprovante" hidden>Baixar comprovante</button>
+          <a class="btn ghost" id="lnk-espelho" hidden target="_blank" rel="noopener">Baixar espelho em PDF</a>
+          <span class="hint" id="save-state"></span>
+        </div>
+      </section>
+      </div>
+    </form>
+  </main>
+
+  <!-- ===================== PAINEL COAPE ===================== -->
+  <main id="view-painel" class="wrap" hidden>
+    <div class="notice"><strong>Acesso restrito</strong><p>Este painel aparece apenas para quem edita o formulário (equipe COAPE/ARLEP). O CPF aparece mascarado na tela e completo somente nas exportações.</p></div>
+    <div class="summary" id="p-kpis"></div>
+    <div class="actions">
+      <input type="text" id="p-busca" placeholder="Buscar por nome, SIAPE ou setor" style="max-width:320px" aria-label="Buscar">
+      <select id="p-filtro" style="max-width:240px" aria-label="Filtro">
+        <option value="">Todas as declarações</option>
+        <option value="alerta">Com alerta de triagem</option>
+        <option value="acima60">Acima de 60h semanais</option>
+        <option value="pendente">Status: recebida</option>
+      </select>
+      <button type="button" class="btn ghost small" id="exp-json">Exportar JSON</button>
+      <button type="button" class="btn ghost small" id="exp-csv-d">CSV declarações</button>
+      <button type="button" class="btn ghost small" id="exp-csv-v">CSV vínculos</button>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Servidor(a)</th><th>SIAPE</th><th>CPF</th><th>Setor</th><th>Finalidade</th><th>Vínculos</th><th>h/sem efetivas</th><th>Triagem</th><th>Enviada em</th><th>Status</th></tr></thead>
+      <tbody id="p-rows"><tr><td colspan="10" class="hint" style="white-space:normal">Nenhuma declaração recebida ainda. As declarações aparecem aqui assim que os servidores enviam o formulário.</td></tr></tbody>
+    </table></div>
+  </main>
+
+  <!-- ===================== DADOS E INTEGRAÇÃO ===================== -->
+  <main id="view-dados" class="wrap" hidden>
+    <section class="sec">
+      <header><h2>Estrutura dos dados</h2></header>
+      <p>Cada envio gera um documento JSON no esquema <code>into.coape.declaracao_vinculos</code>, versão <code>1.0.0</code>. As exportações em CSV seguem duas tabelas ligadas por <code>declaracao_id</code>: <code>declaracoes.csv</code> (uma linha por servidor, com indicadores) e <code>vinculos.csv</code> (uma linha por vínculo).</p>
+      <p>O esquema completo (JSON Schema), o dicionário de dados e a API REST estão no repositório do projeto (<code>schema/</code> e <code>docs/api.md</code>).</p>
+      <pre id="schema-sample"></pre>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script>
+(() => {
+  "use strict";
+  const SCHEMA = "declaracao_vinculos";
+  const SCHEMA_VERSION = "1.0.0";
+  const BACKEND = window.DV_BACKEND || "artifact"; // "artifact" (claude.ai) ou "api" (hospedagem institucional)
+  const API_BASE = window.DV_API_BASE || "/api/v1";
+  // Identidade da unidade: o servidor injeta window.DV_CONFIG; sem ela, valem os textos do INTO.
+  const CFG = Object.assign({
+    cabecalho_1: "Ministério da Saúde · Secretaria de Atenção Especializada à Saúde",
+    cabecalho_2: "Instituto Nacional de Traumatologia e Ortopedia · Coordenação de Administração de Pessoas",
+    orgao_sigla: "INTO",
+    orgao_titulo: "INTO – Instituto Nacional de Traumatologia e Ortopedia",
+    orgao_nome: "Instituto Nacional de Traumatologia e Ortopedia (INTO/MS)",
+    unidade_gp: "COAPE/INTO",
+    cidade_uf: "Rio de Janeiro/RJ",
+  }, window.DV_CONFIG || {});
+  document.querySelectorAll("[data-cfg]").forEach((el) => { if (CFG[el.dataset.cfg]) el.textContent = CFG[el.dataset.cfg]; });
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  const LABELS = {
+    finalidade: { posse_ingresso: "Posse/ingresso", atualizacao_cadastral: "Atualização cadastral", alteracao_vinculo: "Alteração de vínculo", analise_acumulacao: "Análise de acumulação", outra: "Outra" },
+    status: { recebida: "Recebida", em_analise: "Em análise", pendencia: "Com pendência", regular: "Analisada – regular", encaminhada: "Encaminhada (UDIS/chefia)" },
+  };
+
+  // ---------- Vínculos ----------
+  let vincSeq = 0;
+  function vinculoHTML(k, isInto) {
+    const radios = (name, opts) => opts.map(([v, l]) => `<label><input type="radio" name="${name}" value="${v}"> ${l}</label>`).join("");
+    return `
+    <div class="vinc" data-k="${k}" data-tipo="${isInto ? "into" : "outro"}">
+      <header><h3>${isInto ? esc(CFG.orgao_titulo) : "Outro vínculo"}</h3>${isInto ? "" : `<button type="button" class="btn danger small" data-remove="${k}">Remover</button>`}</header>
+      ${isInto ? "" : `<div class="grid">
+        <label class="f"><span>Órgão/entidade <em>*</em></span><input type="text" id="v${k}_orgao"></label>
+        <label class="f"><span>Esfera <em>*</em></span><select id="v${k}_esfera"><option value="">Selecione</option><option value="federal">Federal</option><option value="estadual">Estadual</option><option value="distrital">Distrital</option><option value="municipal">Municipal</option></select></label>
+        <label class="f"><span>Matrícula no vínculo</span><input type="text" id="v${k}_matricula" class="mono"></label>
+      </div>`}
+      <div class="grid">
+        <label class="f"><span>Cargo/função <em>*</em></span><input type="text" id="v${k}_cargo"></label>
+        <label class="f"><span>Local de exercício <em>*</em></span><input type="text" id="v${k}_local"></label>
+      </div>
+      <div class="f"><span class="lbl">Jornada semanal do cargo <em>*</em></span>
+        <div class="choices" id="v${k}_jornada">${radios(`v${k}_jornada`, [["20h", "20h"], ["30h", "30h"], ["40h", "40h"], ["DE", "Dedicação exclusiva"]])}
+          <span class="inline-other"><label><input type="radio" name="v${k}_jornada" value="outro"> Outro:</label><input type="number" id="v${k}_jornada_outro" min="1" max="80" step="1" class="mono" style="max-width:90px" aria-label="Horas"> h</span></div></div>
+      <div class="grid">
+        <label class="f"><span>Jornada efetivamente realizada (horas semanais) <em>*</em></span><input type="number" id="v${k}_efetiva" min="0" max="168" step="0.5" class="mono"></label>
+        <label class="f"><span>Horário/escala</span><input type="text" id="v${k}_escala" placeholder="Ex.: seg a qua, 7h–19h"><small class="hint">Dias e horários habituais. Ajuda a verificar a compatibilidade.</small></label>
+      </div>
+      <div class="f"><span class="lbl">Modalidade de trabalho <em>*</em></span>
+        <div class="choices" id="v${k}_modal">${radios(`v${k}_modal`, [["presencial", "Presencial"], ["teletrabalho_pgd", "Teletrabalho/PGD"], ["hibrida", "Híbrida"]])}
+          <span class="inline-other"><label><input type="radio" name="v${k}_modal" value="outra"> Outra:</label><input type="text" id="v${k}_modal_outra" aria-label="Outra modalidade"></span></div></div>
+      <div class="f"><span class="lbl">Recebe auxílio-alimentação <em>*</em></span><div class="choices" id="v${k}_aux">${radios(`v${k}_aux`, [["sim", "Sim"], ["nao", "Não"]])}</div></div>
+      <div class="f"><span class="lbl">Possui jornada de trabalho reduzida <em>*</em></span>
+        <div class="choices" id="v${k}_red">${radios(`v${k}_red`, [["nao", "Não"], ["mp_2174_28_2001", "Sim – MP nº 2.174-28/2001"], ["decreto_1590_1995", "Sim – Decreto nº 1.590/1995"]])}
+          <span class="inline-other"><label><input type="radio" name="v${k}_red" value="outro"> Sim – outro fundamento:</label><input type="text" id="v${k}_red_fund" aria-label="Fundamento legal"></span></div></div>
+      <div class="sub">
+        <div class="f"><span class="lbl">Exerce função de confiança? <em>*</em></span><div class="choices" id="v${k}_fc">${radios(`v${k}_fc`, [["sim", "Sim"], ["nao", "Não"]])}</div></div>
+        <div class="grid" id="v${k}_fc_det" hidden>
+          <label class="f"><span>Denominação da função <em>*</em></span><input type="text" id="v${k}_fc_den"></label>
+          <div class="f"><span class="lbl">Considerada técnica ou científica? <em>*</em></span><div class="choices" id="v${k}_fc_tec">${radios(`v${k}_fc_tec`, [["sim", "Sim"], ["nao", "Não"]])}</div></div>
+        </div>
+      </div>
+      <div class="sub">
+        <div class="f"><span class="lbl">Ocupa cargo comissionado? <em>*</em></span><div class="choices" id="v${k}_cc">${radios(`v${k}_cc`, [["sim", "Sim"], ["nao", "Não"]])}</div></div>
+        <div class="grid" id="v${k}_cc_det" hidden>
+          <label class="f"><span>Denominação do cargo <em>*</em></span><input type="text" id="v${k}_cc_den"></label>
+          <div class="f"><span class="lbl">Considerado técnico ou científico? <em>*</em></span><div class="choices" id="v${k}_cc_tec">${radios(`v${k}_cc_tec`, [["sim", "Sim"], ["nao", "Não"]])}</div></div>
+          <label class="f"><span>Jornada semanal do cargo (horas) <em>*</em></span><input type="number" id="v${k}_cc_h" min="0" max="80" class="mono"></label>
+        </div>
+      </div>
+    </div>`;
+  }
+  function addVinculo(isInto) {
+    const k = ++vincSeq;
+    $("#vinculos").insertAdjacentHTML("beforeend", vinculoHTML(k, isInto));
+    return k;
+  }
+
+  // ---------- Helpers ----------
+  const radio = (name) => $(`input[name="${name}"]:checked`)?.value ?? null;
+  const setRadio = (name, v) => { const el = v == null ? null : $(`input[name="${name}"][value="${v}"]`); $$(`input[name="${name}"]`).forEach((i) => (i.checked = i === el)); };
+  const val = (id) => ($("#" + id)?.value ?? "").trim();
+  const setVal = (id, v) => { const el = $("#" + id); if (el) el.value = v ?? ""; };
+  const num = (id) => { const v = val(id).replace(",", "."); return v === "" ? null : Number(v); };
+  const yn = (name) => { const r = radio(name); return r === "sim" ? true : r === "nao" ? false : null; };
+  const setYn = (name, b) => setRadio(name, b === true ? "sim" : b === false ? "nao" : null);
+  const onlyDigits = (s) => String(s || "").replace(/\D/g, "");
+  const JORNADA_H = { "20h": 20, "30h": 30, "40h": 40, DE: 40 };
+
+  function cpfValido(c) {
+    c = onlyDigits(c);
+    if (c.length !== 11 || /^(\d)\1{10}$/.test(c)) return false;
+    for (const t of [9, 10]) {
+      let s = 0;
+      for (let i = 0; i < t; i++) s += Number(c[i]) * (t + 1 - i);
+      if (((s * 10) % 11) % 10 !== Number(c[t])) return false;
+    }
+    return true;
+  }
+  function cnpjValido(c) {
+    c = onlyDigits(c);
+    if (c.length !== 14 || /^(\d)\1{13}$/.test(c)) return false;
+    const calc = (n) => { const w = n === 12 ? [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2] : [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]; const s = w.reduce((a, x, i) => a + x * Number(c[i]), 0); const r = s % 11; return r < 2 ? 0 : 11 - r; };
+    return calc(12) === Number(c[12]) && calc(13) === Number(c[13]);
+  }
+  const fmtCPF = (c) => { c = onlyDigits(c).slice(0, 11); return c.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2"); };
+  const fmtCNPJ = (c) => { c = onlyDigits(c).slice(0, 14); return c.replace(/^(\d{2})(\d)/, "$1.$2").replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3").replace(/\.(\d{3})(\d)/, ".$1/$2").replace(/(\d{4})(\d)/, "$1-$2"); };
+  const maskCPF = (c) => { c = onlyDigits(c); return c.length === 11 ? `***.${c.slice(3, 6)}.${c.slice(6, 9)}-**` : "—"; };
+  const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (ch) => { const r = (Math.random() * 16) | 0; return (ch === "x" ? r : (r & 3) | 8).toString(16); }));
+  const hoje = () => new Date().toLocaleDateString("sv-SE");
+  const fmtDT = (iso) => { try { return new Date(iso).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }); } catch { return iso; } };
+
+  // ---------- Coleta → JSON ----------
+  function collectVinculo(el, ordem) {
+    const k = el.dataset.k, isInto = el.dataset.tipo === "into";
+    const jt = radio(`v${k}_jornada`);
+    const fc = yn(`v${k}_fc`), cc = yn(`v${k}_cc`);
+    const red = radio(`v${k}_red`), modal = radio(`v${k}_modal`);
+    return {
+      ordem,
+      tipo: isInto ? "principal" : "outro",
+      orgao_entidade: isInto ? CFG.orgao_nome : val(`v${k}_orgao`),
+      esfera: isInto ? "federal" : val(`v${k}_esfera`) || null,
+      matricula_vinculo: isInto ? null : val(`v${k}_matricula`) || null,
+      cargo_funcao: val(`v${k}_cargo`),
+      jornada_semanal_cargo: { tipo: jt, horas: jt === "outro" ? num(`v${k}_jornada_outro`) : JORNADA_H[jt] ?? null },
+      jornada_efetiva_horas: num(`v${k}_efetiva`),
+      horario_escala: val(`v${k}_escala`) || null,
+      local_exercicio: val(`v${k}_local`),
+      modalidade_trabalho: { tipo: modal, outra: modal === "outra" ? val(`v${k}_modal_outra`) : null },
+      recebe_auxilio_alimentacao: yn(`v${k}_aux`),
+      jornada_reduzida: { tipo: red, fundamento: red === "outro" ? val(`v${k}_red_fund`) : null },
+      funcao_confianca: { possui: fc, denominacao: fc ? val(`v${k}_fc_den`) : null, tecnica_cientifica: fc ? yn(`v${k}_fc_tec`) : null },
+      cargo_comissionado: { possui: cc, denominacao: cc ? val(`v${k}_cc_den`) : null, tecnica_cientifica: cc ? yn(`v${k}_cc_tec`) : null, jornada_horas: cc ? num(`v${k}_cc_h`) : null },
+    };
+  }
+  function computeIndicadores(d) {
+    const vs = d.vinculos || [];
+    const sum = (f) => vs.reduce((a, v) => a + (Number(f(v)) || 0), 0);
+    const contratual = sum((v) => v.jornada_semanal_cargo?.horas);
+    const efetiva = sum((v) => v.jornada_efetiva_horas);
+    const auxCount = vs.filter((v) => v.recebe_auxilio_alimentacao).length + (d.aposentadoria?.recebe_auxilio_alimentacao ? 1 : 0) + (d.pensao?.recebe_auxilio_alimentacao ? 1 : 0);
+    const into = vs.find((v) => v.tipo === "principal");
+    const ind = {
+      qtd_vinculos_publicos: vs.length,
+      qtd_outros_vinculos: vs.filter((v) => v.tipo !== "principal").length,
+      carga_semanal_contratual_total: contratual,
+      carga_semanal_efetiva_total: efetiva,
+      acima_60h_semanais: efetiva > 60 || contratual > 60,
+      possui_acumulacao_declarada: vs.length > 1 || !!d.aposentadoria?.possui || !!d.pensao?.possui,
+      recebe_proventos_aposentadoria: !!d.aposentadoria?.possui,
+      recebe_pensao: !!d.pensao?.possui,
+      dedicacao_exclusiva_com_outro_vinculo: vs.some((v) => v.jornada_semanal_cargo?.tipo === "DE") && vs.length > 1,
+      alerta_gerencia_empresa: d.empresa_privada?.participa === true && d.empresa_privada?.condicao === "nenhuma_das_anteriores",
+      auxilio_alimentacao_multiplo: auxCount > 1,
+      jornada_efetiva_divergente: vs.some((v) => v.jornada_semanal_cargo?.horas != null && v.jornada_efetiva_horas != null && v.jornada_efetiva_horas !== v.jornada_semanal_cargo.horas),
+      teletrabalho_orgao_principal: ["teletrabalho_pgd", "hibrida"].includes(into?.modalidade_trabalho?.tipo),
+    };
+    ind.qtd_alertas = ["acima_60h_semanais", "dedicacao_exclusiva_com_outro_vinculo", "alerta_gerencia_empresa", "auxilio_alimentacao_multiplo"].filter((k) => ind[k]).length + (ind.recebe_proventos_aposentadoria && vs.length > 0 ? 1 : 0);
+    return ind;
+  }
+  function collect() {
+    const fin = radio("finalidade");
+    const apos = yn("apos"), pens = yn("pens"), emp = yn("emp");
+    const d = {
+      schema: SCHEMA,
+      schema_version: SCHEMA_VERSION,
+      identificacao: {
+        nome: val("nome"), nome_social: val("nome_social") || null, matricula_siape: onlyDigits(val("matricula_siape")), cpf: onlyDigits(val("cpf")),
+        setor_lotacao: val("setor_lotacao"), cargo_especialidade: val("cargo_especialidade"), telefone: val("telefone"),
+        email_pessoal: val("email_pessoal") || null, email_institucional: val("email_institucional"),
+      },
+      finalidade: { tipo: fin, outra_descricao: fin === "outra" ? val("finalidade_outra") : null },
+      situacoes: $$('input[name="situacoes"]:checked').map((i) => i.value),
+      vinculos: $$("#vinculos .vinc").map((el, i) => collectVinculo(el, i + 1)),
+      aposentadoria: { possui: apos, data_inicio: apos ? val("apos_data") || null : null, valor_proventos: apos ? num("apos_valor") : null, recebe_auxilio_alimentacao: apos ? yn("apos_aux") : null },
+      pensao: {
+        possui: pens, origem: pens ? val("pens_origem") : null, instituidor: pens ? val("pens_instituidor") : null, matricula: pens ? val("pens_matricula") || null : null,
+        regime_previdenciario: pens ? val("pens_regime") || null : null, data_instituicao: pens ? val("pens_data") || null : null, valor: pens ? num("pens_valor") : null, recebe_auxilio_alimentacao: pens ? yn("pens_aux") : null,
+      },
+      empresa_privada: { participa: emp, condicao: emp ? radio("emp_cond") : null, cnpj: emp ? onlyDigits(val("emp_cnpj")) || null : null },
+      informacoes_complementares: val("info_comp") || null,
+      documentos: { processo_sei: val("processo_sei") || null, juntados: $$('input[name="docs"]:checked').map((i) => i.value) },
+      manifestacao: { declara_veracidade: $("#decl_veracidade").checked, ciencia_lgpd: $("#decl_lgpd").checked, local: CFG.cidade_uf, data: hoje() },
+    };
+    d.indicadores = computeIndicadores(d);
+    return d;
+  }
+
+  // ---------- Preenchimento a partir do JSON (retificação) ----------
+  function fill(d) {
+    const id = d.identificacao || {};
+    ["nome", "nome_social", "setor_lotacao", "cargo_especialidade", "telefone", "email_pessoal", "email_institucional"].forEach((k) => setVal(k, id[k]));
+    setVal("matricula_siape", id.matricula_siape); setVal("cpf", fmtCPF(id.cpf));
+    setRadio("finalidade", d.finalidade?.tipo); setVal("finalidade_outra", d.finalidade?.outra_descricao);
+    $$('input[name="situacoes"]').forEach((i) => (i.checked = (d.situacoes || []).includes(i.value)));
+    $("#vinculos").innerHTML = ""; vincSeq = 0;
+    (d.vinculos?.length ? d.vinculos : [{ tipo: "principal" }]).forEach((v) => {
+      const k = addVinculo(v.tipo === "principal");
+      setVal(`v${k}_orgao`, v.tipo === "principal" ? "" : v.orgao_entidade); setVal(`v${k}_esfera`, v.esfera); setVal(`v${k}_matricula`, v.matricula_vinculo);
+      setVal(`v${k}_cargo`, v.cargo_funcao); setVal(`v${k}_local`, v.local_exercicio);
+      setRadio(`v${k}_jornada`, v.jornada_semanal_cargo?.tipo); if (v.jornada_semanal_cargo?.tipo === "outro") setVal(`v${k}_jornada_outro`, v.jornada_semanal_cargo.horas);
+      setVal(`v${k}_efetiva`, v.jornada_efetiva_horas); setVal(`v${k}_escala`, v.horario_escala);
+      setRadio(`v${k}_modal`, v.modalidade_trabalho?.tipo); setVal(`v${k}_modal_outra`, v.modalidade_trabalho?.outra);
+      setYn(`v${k}_aux`, v.recebe_auxilio_alimentacao);
+      setRadio(`v${k}_red`, v.jornada_reduzida?.tipo); setVal(`v${k}_red_fund`, v.jornada_reduzida?.fundamento);
+      setYn(`v${k}_fc`, v.funcao_confianca?.possui); setVal(`v${k}_fc_den`, v.funcao_confianca?.denominacao); setYn(`v${k}_fc_tec`, v.funcao_confianca?.tecnica_cientifica);
+      setYn(`v${k}_cc`, v.cargo_comissionado?.possui); setVal(`v${k}_cc_den`, v.cargo_comissionado?.denominacao); setYn(`v${k}_cc_tec`, v.cargo_comissionado?.tecnica_cientifica); setVal(`v${k}_cc_h`, v.cargo_comissionado?.jornada_horas);
+    });
+    const a = d.aposentadoria || {}; setYn("apos", a.possui); setVal("apos_data", a.data_inicio); setVal("apos_valor", a.valor_proventos); setYn("apos_aux", a.recebe_auxilio_alimentacao);
+    const p = d.pensao || {}; setYn("pens", p.possui); setVal("pens_origem", p.origem); setVal("pens_instituidor", p.instituidor); setVal("pens_matricula", p.matricula); setVal("pens_regime", p.regime_previdenciario); setVal("pens_data", p.data_instituicao); setVal("pens_valor", p.valor); setYn("pens_aux", p.recebe_auxilio_alimentacao);
+    const e = d.empresa_privada || {}; setYn("emp", e.participa); setRadio("emp_cond", e.condicao); setVal("emp_cnpj", e.cnpj ? fmtCNPJ(e.cnpj) : "");
+    setVal("info_comp", d.informacoes_complementares); setVal("processo_sei", d.documentos?.processo_sei);
+    $$('input[name="docs"]').forEach((i) => (i.checked = (d.documentos?.juntados || []).includes(i.value)));
+    $("#decl_veracidade").checked = false; $("#decl_lgpd").checked = false;
+    refresh();
+  }
+
+  // ---------- Condicionais e resumo ----------
+  function refresh() {
+    $("#apos-det").hidden = radio("apos") !== "sim";
+    $("#pens-det").hidden = radio("pens") !== "sim";
+    $("#emp-det").hidden = radio("emp") !== "sim";
+    $$("#vinculos .vinc").forEach((el) => {
+      const k = el.dataset.k;
+      $(`#v${k}_fc_det`).hidden = radio(`v${k}_fc`) !== "sim";
+      $(`#v${k}_cc_det`).hidden = radio(`v${k}_cc`) !== "sim";
+    });
+    renderResumo(collect());
+  }
+  function flagsFor(d) {
+    const i = d.indicadores, out = [];
+    if (i.acima_60h_semanais) out.push("Soma acima de 60h semanais: a ARLEP pedirá parecer da chefia e escalas de todos os vínculos (triagem interna; a compatibilidade de horários é aferida no caso concreto).");
+    if (i.dedicacao_exclusiva_com_outro_vinculo) out.push("Regime de dedicação exclusiva declarado junto com outro vínculo: verificar a vedação do regime de DE.");
+    if (i.recebe_proventos_aposentadoria && d.vinculos.length) out.push("Proventos de aposentadoria com cargo em atividade: verificar se os cargos são acumuláveis (CF, art. 37, § 10).");
+    if (i.alerta_gerencia_empresa) out.push("Participação em gerência ou administração de empresa fora da condição de acionista, cotista ou comanditário (Lei nº 8.112/1990, art. 117, X).");
+    if (i.auxilio_alimentacao_multiplo) out.push("Auxílio-alimentação informado em mais de uma fonte: verificar a percepção em duplicidade.");
+    if (i.jornada_efetiva_divergente) out.push("Jornada efetivamente realizada diferente da jornada do cargo em ao menos um vínculo: explicar em informações complementares, se for o caso.");
+    return out;
+  }
+  function renderResumo(d) {
+    const i = d.indicadores;
+    $("#kpis").innerHTML = [
+      [i.qtd_vinculos_publicos, "vínculos públicos"],
+      [i.carga_semanal_contratual_total + "h", "jornada contratual semanal"],
+      [i.carga_semanal_efetiva_total + "h", "jornada efetiva semanal"],
+      [i.qtd_alertas, "pontos de atenção"],
+    ].map(([b, s]) => `<div class="kpi"><b>${esc(b)}</b><span>${s}</span></div>`).join("");
+    const f = flagsFor(d);
+    $("#flags").innerHTML = f.length ? f.map((t) => `<li>${esc(t)}</li>`).join("") : `<li class="okf">Nenhum ponto de atenção identificado com os dados informados até agora.</li>`;
+  }
+
+  // ---------- Validação ----------
+  function validate(d) {
+    $$(".invalid").forEach((e) => e.classList.remove("invalid"));
+    const errs = [];
+    const need = (ok, id, msg) => { if (!ok) { errs.push(msg); const el = $("#" + id); if (el) el.classList.add("invalid"); } };
+    const id = d.identificacao;
+    need(id.nome.length >= 3, "nome", "Informe o nome.");
+    need(/^\d{7,8}$/.test(id.matricula_siape), "matricula_siape", "Matrícula SIAPE deve ter 7 ou 8 dígitos.");
+    need(cpfValido(id.cpf), "cpf", "CPF inválido.");
+    need(!!id.setor_lotacao, "setor_lotacao", "Informe o setor/lotação.");
+    need(!!id.cargo_especialidade, "cargo_especialidade", "Informe o cargo/especialidade.");
+    need(onlyDigits(id.telefone).length >= 10, "telefone", "Informe um telefone com DDD.");
+    need(/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(id.email_institucional), "email_institucional", "E-mail institucional inválido.");
+    if (id.email_pessoal) need(/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(id.email_pessoal), "email_pessoal", "E-mail pessoal inválido.");
+    need(!!d.finalidade.tipo, "finalidade", "Marque a finalidade da declaração.");
+    if (d.finalidade.tipo === "outra") need(!!d.finalidade.outra_descricao, "finalidade_outra", "Descreva a outra finalidade.");
+    need(d.situacoes.length > 0, "situacoes", "Marque ao menos uma situação a declarar.");
+    $$("#vinculos .vinc").forEach((el, n) => {
+      const k = el.dataset.k, v = d.vinculos[n], nome = v.tipo === "principal" ? CFG.orgao_sigla : `outro vínculo ${n}`;
+      if (v.tipo !== "principal") { need(!!v.orgao_entidade, `v${k}_orgao`, `Informe o órgão do ${nome}.`); need(!!v.esfera, `v${k}_esfera`, `Informe a esfera do ${nome}.`); }
+      need(!!v.cargo_funcao, `v${k}_cargo`, `Informe o cargo/função (${nome}).`);
+      need(!!v.local_exercicio, `v${k}_local`, `Informe o local de exercício (${nome}).`);
+      need(!!v.jornada_semanal_cargo.tipo && v.jornada_semanal_cargo.horas > 0, `v${k}_jornada`, `Informe a jornada do cargo (${nome}).`);
+      need(v.jornada_efetiva_horas != null && v.jornada_efetiva_horas >= 0, `v${k}_efetiva`, `Informe a jornada efetivamente realizada (${nome}).`);
+      need(!!v.modalidade_trabalho.tipo && (v.modalidade_trabalho.tipo !== "outra" || !!v.modalidade_trabalho.outra), `v${k}_modal`, `Informe a modalidade de trabalho (${nome}).`);
+      need(v.recebe_auxilio_alimentacao != null, `v${k}_aux`, `Informe se recebe auxílio-alimentação (${nome}).`);
+      need(!!v.jornada_reduzida.tipo && (v.jornada_reduzida.tipo !== "outro" || !!v.jornada_reduzida.fundamento), `v${k}_red`, `Informe a jornada reduzida (${nome}).`);
+      need(v.funcao_confianca.possui != null, `v${k}_fc`, `Informe se exerce função de confiança (${nome}).`);
+      if (v.funcao_confianca.possui) { need(!!v.funcao_confianca.denominacao, `v${k}_fc_den`, `Informe a função de confiança (${nome}).`); need(v.funcao_confianca.tecnica_cientifica != null, `v${k}_fc_tec`, `Informe se a função é técnica ou científica (${nome}).`); }
+      need(v.cargo_comissionado.possui != null, `v${k}_cc`, `Informe se ocupa cargo comissionado (${nome}).`);
+      if (v.cargo_comissionado.possui) { need(!!v.cargo_comissionado.denominacao, `v${k}_cc_den`, `Informe o cargo comissionado (${nome}).`); need(v.cargo_comissionado.tecnica_cientifica != null, `v${k}_cc_tec`, `Informe se o cargo é técnico ou científico (${nome}).`); need(v.cargo_comissionado.jornada_horas > 0, `v${k}_cc_h`, `Informe a jornada do cargo comissionado (${nome}).`); }
+    });
+    need(d.aposentadoria.possui != null, "apos", "Informe se recebe proventos de aposentadoria.");
+    if (d.aposentadoria.possui) { need(!!d.aposentadoria.data_inicio, "apos_data", "Informe a data de início da aposentadoria."); need(d.aposentadoria.valor_proventos > 0, "apos_valor", "Informe o valor dos proventos."); need(d.aposentadoria.recebe_auxilio_alimentacao != null, "apos_aux", "Informe se recebe auxílio-alimentação na aposentadoria."); }
+    need(d.pensao.possui != null, "pens", "Informe se é beneficiário(a) de pensão.");
+    if (d.pensao.possui) { const p = d.pensao; need(!!p.origem, "pens_origem", "Informe a origem da pensão."); need(!!p.instituidor, "pens_instituidor", "Identifique o instituidor da pensão."); need(!!p.regime_previdenciario, "pens_regime", "Informe o regime previdenciário."); need(!!p.data_instituicao, "pens_data", "Informe a data da instituição da pensão."); need(p.valor > 0, "pens_valor", "Informe o valor da pensão."); need(p.recebe_auxilio_alimentacao != null, "pens_aux", "Informe se recebe auxílio-alimentação na pensão."); }
+    need(d.empresa_privada.participa != null, "emp", "Informe se participa de gerência ou administração de empresa.");
+    if (d.empresa_privada.participa) { need(!!d.empresa_privada.condicao, "emp_cond", "Informe a condição de participação na empresa."); need(cnpjValido(d.empresa_privada.cnpj), "emp_cnpj", "CNPJ inválido."); }
+    need(d.manifestacao.declara_veracidade, "decl_veracidade", "Marque a declaração de veracidade.");
+    need(d.manifestacao.ciencia_lgpd, "decl_lgpd", "Marque a ciência sobre o tratamento de dados.");
+    return errs;
+  }
+
+  // ---------- Exportações (formato tabular p/ pipelines) ----------
+  const csvCell = (v) => { if (v == null) return ""; const s = typeof v === "boolean" ? (v ? "true" : "false") : String(v); return /[;"\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+  const toCSV = (rows, cols) => "﻿" + [cols.join(";"), ...rows.map((r) => cols.map((c) => csvCell(r[c])).join(";"))].join("\r\n");
+  const COLS_D = ["declaracao_id", "versao", "enviado_em", "nome", "nome_social", "matricula_siape", "cpf", "setor_lotacao", "cargo_especialidade", "telefone", "email_institucional", "finalidade", "finalidade_outra", "situacoes", "qtd_vinculos_publicos", "qtd_outros_vinculos", "carga_semanal_contratual_total", "carga_semanal_efetiva_total", "acima_60h_semanais", "possui_acumulacao_declarada", "recebe_proventos_aposentadoria", "aposentadoria_data_inicio", "aposentadoria_valor", "recebe_pensao", "pensao_regime", "pensao_valor", "empresa_participa", "empresa_condicao", "empresa_cnpj", "alerta_gerencia_empresa", "dedicacao_exclusiva_com_outro_vinculo", "auxilio_alimentacao_multiplo", "teletrabalho_orgao_principal", "qtd_alertas", "processo_sei", "status_analise"];
+  const COLS_V = ["declaracao_id", "matricula_siape", "ordem", "tipo", "orgao_entidade", "esfera", "matricula_vinculo", "cargo_funcao", "jornada_tipo", "jornada_horas", "jornada_efetiva_horas", "horario_escala", "local_exercicio", "modalidade", "recebe_auxilio_alimentacao", "jornada_reduzida", "jornada_reduzida_fundamento", "fc_possui", "fc_denominacao", "fc_tecnica_cientifica", "cc_possui", "cc_denominacao", "cc_tecnica_cientifica", "cc_jornada_horas"];
+  function flatD(d, status) {
+    const i = d.indicadores || computeIndicadores(d), id = d.identificacao;
+    return { declaracao_id: d.declaracao_id, versao: d.versao, enviado_em: d.enviado_em, nome: id.nome, nome_social: id.nome_social, matricula_siape: id.matricula_siape, cpf: id.cpf, setor_lotacao: id.setor_lotacao, cargo_especialidade: id.cargo_especialidade, telefone: id.telefone, email_institucional: id.email_institucional,
+      finalidade: d.finalidade?.tipo, finalidade_outra: d.finalidade?.outra_descricao, situacoes: (d.situacoes || []).join("|"), ...i,
+      aposentadoria_data_inicio: d.aposentadoria?.data_inicio, aposentadoria_valor: d.aposentadoria?.valor_proventos, pensao_regime: d.pensao?.regime_previdenciario, pensao_valor: d.pensao?.valor,
+      empresa_participa: d.empresa_privada?.participa, empresa_condicao: d.empresa_privada?.condicao, empresa_cnpj: d.empresa_privada?.cnpj, processo_sei: d.documentos?.processo_sei, status_analise: status || "recebida" };
+  }
+  const flatV = (d) => (d.vinculos || []).map((v) => ({ declaracao_id: d.declaracao_id, matricula_siape: d.identificacao.matricula_siape, ordem: v.ordem, tipo: v.tipo, orgao_entidade: v.orgao_entidade, esfera: v.esfera, matricula_vinculo: v.matricula_vinculo, cargo_funcao: v.cargo_funcao,
+    jornada_tipo: v.jornada_semanal_cargo?.tipo, jornada_horas: v.jornada_semanal_cargo?.horas, jornada_efetiva_horas: v.jornada_efetiva_horas, horario_escala: v.horario_escala, local_exercicio: v.local_exercicio, modalidade: v.modalidade_trabalho?.tipo === "outra" ? `outra: ${v.modalidade_trabalho.outra}` : v.modalidade_trabalho?.tipo,
+    recebe_auxilio_alimentacao: v.recebe_auxilio_alimentacao, jornada_reduzida: v.jornada_reduzida?.tipo, jornada_reduzida_fundamento: v.jornada_reduzida?.fundamento, fc_possui: v.funcao_confianca?.possui, fc_denominacao: v.funcao_confianca?.denominacao, fc_tecnica_cientifica: v.funcao_confianca?.tecnica_cientifica,
+    cc_possui: v.cargo_comissionado?.possui, cc_denominacao: v.cargo_comissionado?.denominacao, cc_tecnica_cientifica: v.cargo_comissionado?.tecnica_cientifica, cc_jornada_horas: v.cargo_comissionado?.jornada_horas }));
+
+  // ---------- UI util ----------
+  let toastT;
+  function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => (t.hidden = true), 4200); }
+  function showView(v) {
+    $$("#tabs button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.view === v)));
+    ["form", "painel", "dados"].forEach((x) => ($("#view-" + x).hidden = x !== v));
+  }
+  $("#tabs").addEventListener("click", (e) => { const b = e.target.closest("button[data-view]"); if (b) showView(b.dataset.view); });
+
+  // ---------- Backend ----------
+  let db = null, user = null, uid = null, downloads = null, lastSaved = null;
+  const declRef = () => db.doc("declaracoes/" + uid);
+
+  async function salvar(d) {
+    if (BACKEND === "api") {
+      const r = await fetch(API_BASE + "/declaracoes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(d) });
+      if (!r.ok) throw new Error((await r.text()) || "Falha no envio (" + r.status + ").");
+      return await r.json();
+    }
+    if (!db || !uid) throw new Error("Armazenamento indisponível nesta visualização. Entre na sua conta e abra o formulário pelo link compartilhado pela COAPE.");
+    const prev = await declRef().get();
+    const old = prev.exists ? prev.data() : null;
+    const historico = old ? [{ ...old, historico: undefined }, ...(old.historico || [])].slice(0, 10).map((h) => { const c = { ...h }; delete c.historico; return c; }) : [];
+    d.declarante_uid = uid;
+    d.versao = (old?.versao || 0) + 1;
+    d.historico = historico;
+    await declRef().set(JSON.parse(JSON.stringify(d)));
+    return d;
+  }
+
+  async function baixar(filename, data, mime) {
+    if (!downloads) { toast("Download indisponível nesta visualização."); return; }
+    try { await downloads.save({ filename, data: new Blob([data], { type: mime }) }); }
+    catch (e) { if (e?.code !== "cancelled") toast("O arquivo não foi salvo."); }
+  }
+
+  // ---------- Envio ----------
+  $("#form").addEventListener("input", (e) => {
+    if (e.target.id === "cpf") e.target.value = fmtCPF(e.target.value);
+    if (e.target.id === "emp_cnpj") e.target.value = fmtCNPJ(e.target.value);
+    refresh();
+  });
+  $("#form").addEventListener("change", refresh);
+  $("#form").addEventListener("click", (e) => {
+    const rm = e.target.closest("[data-remove]");
+    if (rm) { $(`.vinc[data-k="${rm.dataset.remove}"]`)?.remove(); refresh(); }
+  });
+  $("#add-vinculo").addEventListener("click", () => { const k = addVinculo(false); refresh(); $(`#v${k}_orgao`)?.focus(); });
+
+  $("#form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const d = collect();
+    const errs = validate(d);
+    const box = $("#form-errors");
+    if (errs.length) {
+      box.innerHTML = `<strong>Corrija ${errs.length} ${errs.length === 1 ? "item" : "itens"} antes de enviar:</strong><ul style="margin:0;padding-left:18px">${errs.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>`;
+      box.hidden = false; box.scrollIntoView({ behavior: "smooth", block: "center" }); return;
+    }
+    box.hidden = true;
+    const btn = $("#btn-enviar"); btn.disabled = true; $("#save-state").textContent = "Enviando…";
+    d.declaracao_id = lastSaved?.declaracao_id || uuid();
+    d.enviado_em = new Date().toISOString();
+    try {
+      lastSaved = await salvar(d);
+      $("#save-state").textContent = `Declaração enviada em ${fmtDT(lastSaved.enviado_em || d.enviado_em)}${lastSaved.versao ? ` (versão ${lastSaved.versao})` : ""}.${lastSaved.protocolo ? ` Protocolo ${lastSaved.protocolo}.` : ""}`;
+      $("#btn-comprovante").hidden = !downloads;
+      if (lastSaved.links?.espelho_pdf) { const a = $("#lnk-espelho"); a.href = lastSaved.links.espelho_pdf; a.hidden = false; }
+      $("#btn-enviar").textContent = "Enviar retificação";
+      toast("Declaração enviada.");
+    } catch (err) {
+      box.innerHTML = `<strong>Não foi possível enviar.</strong><p>${esc(err?.message || err)}</p>`; box.hidden = false;
+      $("#save-state").textContent = "";
+    } finally { btn.disabled = false; }
+  });
+  $("#btn-comprovante").addEventListener("click", () => {
+    if (!lastSaved) return;
+    const c = { ...lastSaved }; delete c.historico;
+    baixar(`declaracao_vinculos_${c.identificacao.matricula_siape}_v${c.versao || 1}.json`, JSON.stringify(c, null, 2), "application/json");
+  });
+
+  // ---------- Painel COAPE ----------
+  let rows = [], analises = {};
+  function renderPainel() {
+    const q = val("p-busca").toLowerCase(), f = $("#p-filtro").value;
+    const list = rows.filter((d) => {
+      const id = d.identificacao || {};
+      if (q && !`${id.nome} ${id.matricula_siape} ${id.setor_lotacao}`.toLowerCase().includes(q)) return false;
+      if (f === "alerta" && !(d.indicadores?.qtd_alertas > 0)) return false;
+      if (f === "acima60" && !d.indicadores?.acima_60h_semanais) return false;
+      if (f === "pendente" && (analises[d.__uid]?.status || "recebida") !== "recebida") return false;
+      return true;
+    });
+    const all = rows.map((d) => d.indicadores || {});
+    $("#p-kpis").innerHTML = [
+      [rows.length, "declarações recebidas"],
+      [all.filter((i) => i.qtd_outros_vinculos > 0).length, "com outro vínculo público"],
+      [all.filter((i) => i.acima_60h_semanais).length, "acima de 60h semanais"],
+      [rows.filter((d) => (analises[d.__uid]?.status || "recebida") === "recebida").length, "aguardando análise"],
+    ].map(([b, s]) => `<div class="kpi"><b>${b}</b><span>${s}</span></div>`).join("");
+    if (!list.length) { $("#p-rows").innerHTML = `<tr><td colspan="10" class="hint" style="white-space:normal">${rows.length ? "Nenhuma declaração atende ao filtro." : "Nenhuma declaração recebida ainda. As declarações aparecem aqui assim que os servidores enviam o formulário."}</td></tr>`; return; }
+    $("#p-rows").innerHTML = list.map((d) => {
+      const id = d.identificacao, i = d.indicadores || {}, st = analises[d.__uid]?.status || "recebida";
+      const pills = [i.acima_60h_semanais && `<span class="pill w">>60h</span>`, i.alerta_gerencia_empresa && `<span class="pill b">Empresa</span>`, i.dedicacao_exclusiva_com_outro_vinculo && `<span class="pill b">DE</span>`, i.recebe_proventos_aposentadoria && `<span class="pill w">Aposent.</span>`, i.recebe_pensao && `<span class="pill">Pensão</span>`, i.auxilio_alimentacao_multiplo && `<span class="pill w">Aux. alim.</span>`].filter(Boolean).join("") || `<span class="hint">—</span>`;
+      return `<tr><td>${esc(id.nome_social || id.nome)}</td><td class="mono">${esc(id.matricula_siape)}</td><td class="mono">${maskCPF(id.cpf)}</td><td>${esc(id.setor_lotacao)}</td><td>${esc(LABELS.finalidade[d.finalidade?.tipo] || "—")}</td><td class="num">${i.qtd_vinculos_publicos ?? "—"}</td><td class="num">${i.carga_semanal_efetiva_total ?? "—"}</td><td>${pills}</td><td class="mono">${fmtDT(d.enviado_em)}${d.versao > 1 ? ` · v${d.versao}` : ""}</td>
+        <td><select data-status="${esc(d.__uid)}" aria-label="Status">${Object.entries(LABELS.status).map(([k, l]) => `<option value="${k}"${k === st ? " selected" : ""}>${l}</option>`).join("")}</select></td></tr>`;
+    }).join("");
+  }
+  $("#p-busca").addEventListener("input", renderPainel);
+  $("#p-filtro").addEventListener("change", renderPainel);
+  $("#p-rows").addEventListener("change", async (e) => {
+    const s = e.target.closest("select[data-status]"); if (!s) return;
+    try { await db.doc("analises/" + s.dataset.status).set({ status: s.value, atualizado_em: new Date().toISOString(), atualizado_por: uid }); toast("Status atualizado."); }
+    catch { toast("Não foi possível atualizar o status."); }
+  });
+  const stamp = () => new Date().toISOString().slice(0, 10);
+  $("#exp-json").addEventListener("click", () => baixar(`declaracoes_vinculos_${stamp()}.json`, JSON.stringify(rows.map((d) => { const c = { ...d, status_analise: analises[d.__uid]?.status || "recebida" }; delete c.__uid; delete c.historico; return c; }), null, 2), "application/json"));
+  $("#exp-csv-d").addEventListener("click", () => baixar(`declaracoes_${stamp()}.csv`, toCSV(rows.map((d) => flatD(d, analises[d.__uid]?.status)), COLS_D), "text/csv"));
+  $("#exp-csv-v").addEventListener("click", () => baixar(`vinculos_${stamp()}.csv`, toCSV(rows.flatMap(flatV), COLS_V), "text/csv"));
+
+  // ---------- Inicialização ----------
+  addVinculo(true);
+  $("#data-hoje").textContent = new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
+  $("#schema-sample").textContent = JSON.stringify({ schema: SCHEMA, schema_version: SCHEMA_VERSION, declaracao_id: "uuid", versao: 1, enviado_em: "AAAA-MM-DDThh:mm:ssZ", identificacao: { nome: "…", matricula_siape: "1234567", cpf: "11 dígitos", "…": "…" }, finalidade: { tipo: "analise_acumulacao" }, situacoes: ["servidor_empregado_ativo"], vinculos: [{ ordem: 1, tipo: "principal", jornada_semanal_cargo: { tipo: "30h", horas: 30 }, jornada_efetiva_horas: 30, "…": "…" }], aposentadoria: { possui: false }, pensao: { possui: false }, empresa_privada: { participa: false }, indicadores: { carga_semanal_efetiva_total: 30, acima_60h_semanais: false, qtd_alertas: 0 } }, null, 2);
+  refresh();
+
+  if (BACKEND === "api") {
+    $("#status-box p").textContent += " Após o envio, baixe o espelho em PDF e junte-o ao processo SEI.";
+    (async () => {
+      try {
+        const sess = await (await fetch(API_BASE + "/sessao")).json();
+        if (!sess.autenticado) return;
+        if (sess.nome && !val("nome")) setVal("nome", sess.nome);
+        if (sess.email && !val("email_institucional")) setVal("email_institucional", sess.email);
+        const r = await fetch(API_BASE + "/minha-declaracao");
+        if (r.ok) {
+          lastSaved = await r.json(); fill(lastSaved);
+          $("#save-state").textContent = `Última declaração enviada em ${fmtDT(lastSaved.enviado_em)} (versão ${lastSaved.versao}). Revise e envie novamente para retificar.`;
+          $("#btn-enviar").textContent = "Enviar retificação";
+          if (lastSaved.links?.espelho_pdf) { const a = $("#lnk-espelho"); a.href = lastSaved.links.espelho_pdf; a.hidden = false; }
+        }
+      } catch { /* sem autenticação configurada */ }
+    })();
+    return;
+  }
+
+  (async () => {
+    const use = window.claude?.use;
+    if (!use) return;
+    [db, user, downloads] = await Promise.all([use("db"), use("user"), use("downloads")]);
+    uid = user ? await user.id() : null;
+    if (!db || !uid) {
+      const b = $("#status-box"); b.classList.add("warn");
+      b.innerHTML = "<strong>Envio indisponível nesta visualização</strong><p>Entre na sua conta e abra o formulário pelo link compartilhado pela COAPE para enviar a declaração.</p>";
+      return;
+    }
+    try {
+      const snap = await declRef().get();
+      if (snap.exists) {
+        lastSaved = snap.data(); fill(lastSaved);
+        $("#save-state").textContent = `Última declaração enviada em ${fmtDT(lastSaved.enviado_em)} (versão ${lastSaved.versao || 1}). Revise e envie novamente para retificar.`;
+        $("#btn-enviar").textContent = "Enviar retificação";
+        $("#btn-comprovante").hidden = !downloads;
+      }
+    } catch { /* sem declaração anterior legível */ }
+    const admin = await user.canEdit().catch(() => false);
+    if (!admin) return;
+    $("#tab-painel").hidden = false; $("#tab-dados").hidden = false;
+    db.collection("declaracoes").onSnapshot((s) => { rows = s.docs.map((x) => ({ ...x.data(), __uid: x.id })).sort((a, b) => String(b.enviado_em).localeCompare(String(a.enviado_em))); renderPainel(); }, () => toast("Não foi possível carregar as declarações."));
+    db.collection("analises").onSnapshot((s) => { analises = Object.fromEntries(s.docs.map((x) => [x.id, x.data()])); renderPainel(); }, () => {});
+  })();
+})();
+</script>
